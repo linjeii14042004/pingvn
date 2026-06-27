@@ -14,20 +14,17 @@
         </header>
 
         <main class="main">
-            <!-- Controls -->
             <div class="controls">
                 <button id="startBtn" class="btn btn-primary">▶ Start Test</button>
                 <button id="resetBtn" class="btn btn-secondary" disabled>↺ Reset</button>
             </div>
 
-            <!-- Status -->
             <div id="status" class="status" style="display: none;">
                 <p id="statusText">Initializing...</p>
             </div>
 
-            <!-- Results (hiện real-time) -->
             <div id="results" class="results" style="display: none;">
-                <div class="result-card download-card">
+                <div class="result-card">
                     <div class="result-icon">⬇️</div>
                     <div class="result-value">
                         <span id="downloadValue">-</span>
@@ -35,8 +32,7 @@
                     </div>
                     <div class="result-label">Download</div>
                 </div>
-
-                <div class="result-card upload-card">
+                <div class="result-card">
                     <div class="result-icon">⬆️</div>
                     <div class="result-value">
                         <span id="uploadValue">-</span>
@@ -44,8 +40,7 @@
                     </div>
                     <div class="result-label">Upload</div>
                 </div>
-
-                <div class="result-card latency-card">
+                <div class="result-card">
                     <div class="result-icon">📡</div>
                     <div class="result-value">
                         <span id="latencyValue">-</span>
@@ -53,8 +48,7 @@
                     </div>
                     <div class="result-label">Latency</div>
                 </div>
-
-                <div class="result-card jitter-card">
+                <div class="result-card">
                     <div class="result-icon">📊</div>
                     <div class="result-value">
                         <span id="jitterValue">-</span>
@@ -64,7 +58,6 @@
                 </div>
             </div>
 
-            <!-- Progress -->
             <div id="progress" style="display: none; margin-top: 20px;">
                 <div class="progress-bar">
                     <div id="progressFill" class="progress-fill"></div>
@@ -73,15 +66,13 @@
             </div>
         </main>
 
-        <!-- History -->
         <section class="history">
-            <div class="history-header">
-                <h2>📋 Test History</h2>
-            </div>
+            <h2>📋 Test History</h2>
             <div id="historyList" class="history-list"></div>
         </section>
     </div>
 
-    <script src="app.js"></script>
+    <!-- type="module" quan trọng để dùng ES import -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
