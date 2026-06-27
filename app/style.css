@@ -6,14 +6,14 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #0c0f16; /* Nền tối phẳng hoàn toàn, không gradient */
+    background-color: #0b0f17; /* Nền tối phẳng hoàn toàn */
     color: #ffffff;
     min-height: 100vh;
     padding: 40px 20px;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
@@ -25,7 +25,6 @@ body {
 .header h1 {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #ffffff;
 }
 
 .header p {
@@ -34,8 +33,8 @@ body {
     margin-top: 8px;
 }
 
-/* ĐẬP BỎ HOÀN TOÀN KHUNG BAO QUANH NGOÀI */
-.main {
+/* ĐẬP CHẾT CÁC LỚP KHUNG NỔI BAO NGOÀI */
+.main, .history {
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
@@ -61,7 +60,7 @@ body {
 }
 
 .btn-primary {
-    background-color: #0066ff; /* Màu phẳng */
+    background-color: #0066ff;
     color: white;
 }
 
@@ -84,7 +83,6 @@ body {
     background-color: #222b3a;
 }
 
-/* Khung hiển thị trạng thái chữ */
 .status {
     text-align: center;
     padding: 16px;
@@ -97,10 +95,6 @@ body {
 .status p {
     font-size: 1rem;
     color: #0066ff;
-}
-
-.progress {
-    margin: 35px 0;
 }
 
 .progress-bar {
@@ -125,27 +119,26 @@ body {
     font-weight: 600;
 }
 
-/* GIỮ NGUYÊN LAYOUT CÁC Ô VUÔNG (GRID) */
+/* CHIA ĐỀU 4 Ô VUÔNG */
 .results {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
+    gap: 14px;
     margin: 35px 0;
 }
 
-/* Các ô vuông phẳng đặt trực tiếp lên nền tối của body */
 .result-card {
-    background-color: #161b26; /* Màu ô phẳng lì */
+    background-color: #161b26;
     border: 1px solid #222b3a;
     color: white;
-    padding: 25px 20px;
+    padding: 22px 15px;
     border-radius: 8px;
     text-align: center;
 }
 
 .result-icon {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
 }
 
 .result-value {
@@ -162,34 +155,71 @@ body {
     font-family: monospace, sans-serif;
 }
 
-/* Đổi màu phẳng riêng cho số của từng ô vuông để dễ nhìn */
+/* Màu số phẳng cho từng ô kết quả */
 .result-card:nth-child(1) .result-value span:first-child { color: #38bdf8; } /* Download */
 .result-card:nth-child(2) .result-value span:first-child { color: #34d399; } /* Upload */
 .result-card:nth-child(3) .result-value span:first-child { color: #fbbf24; } /* Latency */
 .result-card:nth-child(4) .result-value span:first-child { color: #c084fc; } /* Jitter */
 
 .result-unit {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #64748b;
 }
 
 .result-label {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* LỊCH SỬ ĐO PHẲNG KHÔNG KHUNG */
-.history {
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-    padding: 0 !important;
+/* ĐƯỜNG KẺ NGĂN CÁCH TRÊN DƯỚI CHO PHẦN THÔNG TIN MẠNG/IP */
+.meta-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 0;
+    padding: 20px 0;
+    border-top: 1px solid #1e293b;
+    border-bottom: 1px solid #1e293b;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.meta-icon {
+    font-size: 1.2rem;
+    background-color: #161b26;
+    border: 1px solid #222b3a;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.meta-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.meta-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.meta-label {
+    font-size: 0.85rem;
+    color: #64748b;
 }
 
 .history h2 {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     margin-bottom: 20px;
     color: #ffffff;
 }
@@ -244,14 +274,11 @@ body {
     padding: 20px;
 }
 
-/* Responsive mượt cho mobile */
+/* Responsive mượt mà trên mobile */
 @media (max-width: 600px) {
-    .results {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .results { grid-template-columns: repeat(2, 1fr); }
+    .meta-info { flex-direction: column; align-items: flex-start; gap: 16px; }
 }
 @media (max-width: 400px) {
-    .results {
-        grid-template-columns: 1fr;
-    }
+    .results { grid-template-columns: 1fr; }
 }
