@@ -58,11 +58,28 @@
                 </div>
             </div>
 
-            <div id="progress" style="display: none; margin-top: 20px;">
+            <div id="metaInfo" class="meta-info" style="display: none;">
+                <div class="meta-item">
+                    <div class="meta-icon">👤</div>
+                    <div class="meta-details">
+                        <span id="clientValue" class="meta-value">-</span>
+                        <span id="ipValue" class="meta-label">-</span>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-icon">🌐</div>
+                    <div class="meta-details">
+                        <span id="serverValue" class="meta-value">-</span>
+                        <span class="meta-label">Cloudflare Server</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="progress" style="display: none; margin-top: 25px;">
                 <div class="progress-bar">
                     <div id="progressFill" class="progress-fill"></div>
                 </div>
-                <p id="progressText" style="text-align:center; margin-top:8px; color:#667eea; font-weight:600;">0%</p>
+                <p id="progressText">0%</p>
             </div>
         </main>
 
@@ -72,7 +89,6 @@
         </section>
     </div>
 
-    <!-- type="module" quan trọng để dùng ES import -->
     <script type="module" src="app.js"></script>
 </body>
 </html>
