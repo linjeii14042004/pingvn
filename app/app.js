@@ -14,7 +14,7 @@ const progressDiv = document.getElementById('progress');
 const progressFill = document.getElementById('progressFill');
 const progressText = document.getElementById('progressText');
 const historyList = document.getElementById('historyList');
-const metaInfo = document.getElementById('metaInfo');
+const metaInfo = document.getElementById('metaInfo'); // DOM thông tin mạng
 
 function loadHistory() {
     const saved = localStorage.getItem('speedtest-history');
@@ -64,7 +64,7 @@ function updateStatus(type) {
     statusText.textContent = messages[type] || '⏳ Running test...';
 }
 
-// Tự động nhận diện và cập nhật thông tin mạng, IP, Máy chủ (Colo) từ Cloudflare
+// HÀM MỚI: Đổ dữ liệu IP, Nhà mạng, Máy chủ ra màn hình
 function updateMetadata(clientInfo) {
     if (clientInfo && clientInfo.ip) {
         metaInfo.style.display = 'flex';
@@ -82,7 +82,7 @@ async function startTest() {
     resetBtn.disabled = false;
 
     resultsDiv.style.display = 'none';
-    metaInfo.style.display = 'none'; 
+    metaInfo.style.display = 'none'; // Ẩn đi khi bắt đầu test mới
     statusDiv.style.display = 'block';
     progressDiv.style.display = 'block';
     statusText.textContent = '⏳ Initializing...';
@@ -93,7 +93,6 @@ async function startTest() {
     });
 
     try {
-        // KHỞI TẠO SẠCH SẼ - KHÔNG CẦN WORKER NỮA
         speedtest = new SpeedTest({ autoStart: false });
 
         let dlPoints = 0;
@@ -103,8 +102,8 @@ async function startTest() {
             updateStatus(type);
             const results = speedtest.results;
 
-            // Lấy thông tin IP/Mạng sớm ngay khi SDK vừa kết nối được với Cloudflare
-            if (results.client) {
+            // Lấy thông tin client ngay khi SDK kết nối thành công tới Cloudflare
+            if (results && results.client) {
                 updateMetadata(results.client);
             }
 
@@ -134,7 +133,6 @@ async function startTest() {
                 if (lat) document.getElementById('latencyValue').textContent = lat.toFixed(0);
                 if (jit) document.getElementById('jitterValue').textContent = jit.toFixed(0);
                 resultsDiv.style.display = 'grid';
-                setProgress(95);
             }
         };
 
@@ -151,8 +149,9 @@ async function startTest() {
             progressDiv.style.display = 'none';
             resultsDiv.style.display = 'grid';
 
-            if (results.results && results.results.client) {
-                updateMetadata(results.results.client);
+            // Cập nhật lại một lần nữa khi kết thúc để chắc chắn có data
+            if (speedtest.results && speedtest.results.client) {
+                updateMetadata(speedtest.results.client);
             }
 
             const summary = results.getSummary();
@@ -204,7 +203,7 @@ function resetTest() {
     statusDiv.style.display = 'none';
     progressDiv.style.display = 'none';
     resultsDiv.style.display = 'none';
-    metaInfo.style.display = 'none'; 
+    metaInfo.style.display = 'none'; // Ẩn cụm thông tin mạng khi reset
     setProgress(0);
 }
 
