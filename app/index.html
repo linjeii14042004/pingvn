@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Speed Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>⚡ Speed Test</h1>
+            <p>Test your internet connection speed</p>
+        </header>
+
+        <main class="main">
+            <!-- Controls -->
+            <div class="controls">
+                <button id="startBtn" class="btn btn-primary">▶ Start Test</button>
+                <button id="resetBtn" class="btn btn-secondary" disabled>↺ Reset</button>
+            </div>
+
+            <!-- Status -->
+            <div id="status" class="status" style="display: none;">
+                <p id="statusText">Initializing...</p>
+            </div>
+
+            <!-- Wave Progress Bar -->
+            <div id="progress" style="display: none; margin-top: 24px;">
+                <div class="wave-bar">
+                    <div id="progressFill" class="wave-fill">
+                        <div class="wave-top"></div>
+                    </div>
+                </div>
+                <p id="progressText" class="progress-label">0%</p>
+            </div>
+
+            <!-- Results -->
+            <div id="results" class="results" style="display: none;">
+                <div class="result-card">
+                    <div class="result-icon">⬇️</div>
+                    <div class="result-value">
+                        <span id="downloadValue">-</span>
+                        <span class="result-unit">Mbps</span>
+                    </div>
+                    <div class="result-label">Download</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-icon">⬆️</div>
+                    <div class="result-value">
+                        <span id="uploadValue">-</span>
+                        <span class="result-unit">Mbps</span>
+                    </div>
+                    <div class="result-label">Upload</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-icon">📡</div>
+                    <div class="result-value">
+                        <span id="latencyValue">-</span>
+                        <span class="result-unit">ms</span>
+                    </div>
+                    <div class="result-label">Latency</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-icon">📊</div>
+                    <div class="result-value">
+                        <span id="jitterValue">-</span>
+                        <span class="result-unit">ms</span>
+                    </div>
+                    <div class="result-label">Jitter</div>
+                </div>
+            </div>
+
+            <!-- Server Info - hiện bên dưới results sau khi test xong -->
+            <div id="serverInfo" class="server-info" style="display:none;">
+                <div class="info-card">
+                    <div class="info-label">🌐 IP Address</div>
+                    <div class="info-value" id="infoIP">-</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">🏢 ISP</div>
+                    <div class="info-value" id="infoISP">-</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">📍 Location</div>
+                    <div class="info-value" id="infoCity">-</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">🖥️ CF Server</div>
+                    <div class="info-value" id="infoServer">-</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- History -->
+        <section class="history">
+            <h2>📋 Test History</h2>
+            <div id="historyList" class="history-list"></div>
+        </section>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
