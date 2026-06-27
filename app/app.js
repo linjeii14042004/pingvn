@@ -14,8 +14,8 @@ const progressDiv = document.getElementById('progress');
 const progressFill = document.getElementById('progressFill');
 const progressText = document.getElementById('progressText');
 const historyList = document.getElementById('historyList');
+const metaInfo = document.getElementById('metaInfo');
 
-// Load history từ localStorage
 function loadHistory() {
     const saved = localStorage.getItem('speedtest-history');
     history = saved ? JSON.parse(saved) : [];
@@ -59,10 +59,19 @@ function updateStatus(type) {
     const messages = {
         latency: '📡 Measuring latency...',
         download: '⬇️ Measuring download speed...',
-        upload: '⬆️ Measuring upload speed...',
-        packetLoss: '📦 Measuring packet loss...'
+        upload: '⬆️ Measuring upload speed...'
     };
     statusText.textContent = messages[type] || '⏳ Running test...';
+}
+
+// Tự động nhận diện và cập nhật thông tin mạng, IP, Máy chủ (Colo) từ Cloudflare
+function updateMetadata(clientInfo) {
+    if (clientInfo && clientInfo.ip) {
+        metaInfo.style.display = 'flex';
+        document.getElementById('clientValue').textContent = clientInfo.asName || 'Unknown ISP';
+        document.getElementById('ipValue').textContent = clientInfo.ip;
+        document.getElementById('serverValue').textContent = clientInfo.colo ? `Cloudflare (${clientInfo.colo})` : 'Cloudflare Server';
+    }
 }
 
 async function startTest() {
@@ -73,6 +82,7 @@ async function startTest() {
     resetBtn.disabled = false;
 
     resultsDiv.style.display = 'none';
+    metaInfo.style.display = 'none'; 
     statusDiv.style.display = 'block';
     progressDiv.style.display = 'block';
     statusText.textContent = '⏳ Initializing...';
@@ -83,6 +93,7 @@ async function startTest() {
     });
 
     try {
+        // KHỞI TẠO SẠCH SẼ - KHÔNG CẦN WORKER NỮA
         speedtest = new SpeedTest({ autoStart: false });
 
         let dlPoints = 0;
@@ -91,6 +102,11 @@ async function startTest() {
         speedtest.onResultsChange = ({ type }) => {
             updateStatus(type);
             const results = speedtest.results;
+
+            // Lấy thông tin IP/Mạng sớm ngay khi SDK vừa kết nối được với Cloudflare
+            if (results.client) {
+                updateMetadata(results.client);
+            }
 
             if (type === 'download') {
                 dlPoints++;
@@ -118,6 +134,7 @@ async function startTest() {
                 if (lat) document.getElementById('latencyValue').textContent = lat.toFixed(0);
                 if (jit) document.getElementById('jitterValue').textContent = jit.toFixed(0);
                 resultsDiv.style.display = 'grid';
+                setProgress(95);
             }
         };
 
@@ -133,6 +150,10 @@ async function startTest() {
             statusDiv.style.display = 'none';
             progressDiv.style.display = 'none';
             resultsDiv.style.display = 'grid';
+
+            if (results.results && results.results.client) {
+                updateMetadata(results.results.client);
+            }
 
             const summary = results.getSummary();
             const dl = summary.download ? (summary.download / 1e6).toFixed(2) : '0';
@@ -183,6 +204,7 @@ function resetTest() {
     statusDiv.style.display = 'none';
     progressDiv.style.display = 'none';
     resultsDiv.style.display = 'none';
+    metaInfo.style.display = 'none'; 
     setProgress(0);
 }
 
