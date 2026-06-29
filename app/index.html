@@ -3,117 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ Speedtest</title>
+    <title>⚡ Speed Test</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ff6b35">
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="theme-color" content="#0066ff">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>⚡ Speed Test</h1>
-            <p>Test your internet connection speed</p>
-        </header>
+<div class="container">
 
-        <main class="main">
-            <div class="controls">
-                <button id="startBtn" class="btn btn-primary">▶ Start Test</button>
-                <button id="resetBtn" class="btn btn-secondary" disabled>↺ Reset</button>
-            </div>
+    <!-- HEADER -->
+    <header class="header">
+        <h1>⚡ Speed Test</h1>
+        <p>Test your internet connection speed</p>
+    </header>
 
-            <div id="status" class="status" style="display: none;">
-                <p id="statusText">Initializing...</p>
-            </div>
+    <main class="main">
 
-            <div id="progress" style="display: none; margin-top: 24px;">
-                <div class="wave-bar">
-                    <div id="progressFill" class="wave-fill">
-                        <div class="wave-top"></div>
-                    </div>
+        <!-- CONTROLS -->
+        <div class="controls">
+            <button id="startBtn" class="btn btn-primary">▶ Start Test</button>
+            <button id="resetBtn" class="btn btn-secondary" disabled>↺ Reset</button>
+        </div>
+
+        <!-- STATUS -->
+        <div id="status" class="status" style="display:none;">
+            <span class="status-dot"></span>
+            <p id="statusText">Initializing...</p>
+        </div>
+
+        <!-- 2-COLUMN WAVE CHARTS -->
+        <div class="charts-grid">
+
+            <!-- Download -->
+            <div class="chart-col">
+                <div class="chart-header">
+                    <span class="chart-label dl-color">⬇ Download</span>
+                    <span class="chart-live dl-color"><span id="dlDisplay">-</span> <span class="mbps-unit">Mbps</span></span>
                 </div>
-                <p id="progressText" class="progress-label">0%</p>
-            </div>
-
-            <!-- MAIN RESULTS SECTION WITH 2-COLUMN LAYOUT -->
-            <div id="results" class="results-container" style="display: none;">
-                <div class="results-grid">
-                    <!-- Download Column -->
-                    <div class="result-column download-column">
-                        <div class="result-header">
-                            <span class="result-label">Download</span>
-                        </div>
-                        <div class="result-value-large">
-                            <span id="downloadValue">-</span>
-                            <span class="result-unit">Mbps</span>
-                        </div>
-                    </div>
-
-                    <!-- Upload Column -->
-                    <div class="result-column upload-column">
-                        <div class="result-header">
-                            <span class="result-label">Upload</span>
-                        </div>
-                        <div class="result-value-large">
-                            <span id="uploadValue">-</span>
-                            <span class="result-unit">Mbps</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Secondary Metrics -->
-                <div class="secondary-metrics">
-                    <div class="metric-card">
-                        <div class="metric-icon">📡</div>
-                        <div class="metric-label">Latency</div>
-                        <div class="metric-value"><span id="latencyValue">-</span> ms</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">📊</div>
-                        <div class="metric-label">Jitter</div>
-                        <div class="metric-value"><span id="jitterValue">-</span> ms</div>
-                    </div>
+                <div class="canvas-wrapper">
+                    <canvas id="dlChart"></canvas>
                 </div>
             </div>
 
-            <!-- SERVER INFO -->
-            <div id="serverInfo" class="server-info" style="display:none;">
-                <div class="info-card">
-                    <div class="info-label">🌐 IP Address</div>
-                    <div class="info-value" id="infoIP">-</div>
+            <!-- Upload -->
+            <div class="chart-col">
+                <div class="chart-header">
+                    <span class="chart-label ul-color">⬆ Upload</span>
+                    <span class="chart-live ul-color"><span id="ulDisplay">-</span> <span class="mbps-unit">Mbps</span></span>
                 </div>
-                <div class="info-card">
-                    <div class="info-label">🏢 ISP</div>
-                    <div class="info-value" id="infoISP">-</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">📍 Location</div>
-                    <div class="info-value" id="infoCity">-</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">🖥️ CF Server</div>
-                    <div class="info-value" id="infoServer">-</div>
+                <div class="canvas-wrapper">
+                    <canvas id="ulChart"></canvas>
                 </div>
             </div>
-        </main>
 
-        <!-- HISTORY SECTION -->
-        <section class="history">
-            <h2>📋 Test History</h2>
-            <div id="historyList" class="history-list"></div>
-        </section>
-    </div>
+        </div>
 
-    <script type="module" src="app.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('[SW] Registered:', reg.scope))
-                    .catch(err => console.error('[SW] Error:', err));
-            });
-        }
-    </script>
+        <!-- METRICS ROW -->
+        <div class="metrics-row">
+            <div class="metric-card">
+                <div class="metric-icon">⬇️</div>
+                <div class="metric-val" id="downloadValue">-</div>
+                <div class="metric-unit">Mbps</div>
+                <div class="metric-lbl">Download</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">⬆️</div>
+                <div class="metric-val" id="uploadValue">-</div>
+                <div class="metric-unit">Mbps</div>
+                <div class="metric-lbl">Upload</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">📡</div>
+                <div class="metric-val" id="latencyValue">-</div>
+                <div class="metric-unit">ms</div>
+                <div class="metric-lbl">Latency</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">📊</div>
+                <div class="metric-val" id="jitterValue">-</div>
+                <div class="metric-unit">ms</div>
+                <div class="metric-lbl">Jitter</div>
+            </div>
+        </div>
+
+        <!-- SERVER INFO -->
+        <div id="serverInfo" class="server-info" style="display:none;">
+            <div class="info-card"><div class="info-lbl">🌐 IP Address</div><div class="info-val" id="infoIP">-</div></div>
+            <div class="info-card"><div class="info-lbl">🏢 ISP</div><div class="info-val" id="infoISP">-</div></div>
+            <div class="info-card"><div class="info-lbl">📍 Location</div><div class="info-val" id="infoCity">-</div></div>
+            <div class="info-card"><div class="info-lbl">🖥️ CF Server</div><div class="info-val" id="infoServer">-</div></div>
+        </div>
+
+    </main>
+
+    <!-- HISTORY -->
+    <section class="history">
+        <h2>📋 Test History</h2>
+        <div id="historyList" class="history-list"></div>
+    </section>
+
+</div>
+<script type="module" src="app.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () =>
+            navigator.serviceWorker.register('/sw.js').catch(() => {})
+        );
+    }
+</script>
 </body>
 </html>
